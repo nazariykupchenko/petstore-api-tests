@@ -1,0 +1,16 @@
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/workspace.xml
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
