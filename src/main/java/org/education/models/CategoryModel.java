@@ -1,4 +1,4 @@
-package org.education.rest.models;
+package org.education.models;
 
 public class CategoryModel {
     public int id;
