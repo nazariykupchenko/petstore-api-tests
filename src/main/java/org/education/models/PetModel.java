@@ -1,4 +1,4 @@
-package org.education.rest.models;
+package org.education.models;
 
 public class PetModel {
     public int id;
