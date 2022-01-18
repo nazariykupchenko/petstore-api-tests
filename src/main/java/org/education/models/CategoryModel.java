@@ -1,13 +1,15 @@
 package org.education.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
+@Builder
 public class CategoryModel {
-    public int id;
-    public String name;
+    private int id;
+    private String name;
 }
