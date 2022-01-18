@@ -1,0 +1,16 @@
+{
+  "id": 1098656772,
+  "category": {
+    "id": 1,
+    "name": "dog"
+  },
+  "name": "tobby",
+  "photoUrls": [
+    "www.zoo.com"
+  ],
+  "tagModel": {
+    "id": 2,
+    "name": "white"
+  },
+  "status": "available"
+}
