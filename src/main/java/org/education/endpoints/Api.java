@@ -1,15 +1,22 @@
 package org.education.endpoints;
 
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
+import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.specification.RequestSpecification;
+
+import static org.education.endpoints.Config.BASE_URI;
 
 public abstract class Api {
 
     public RequestSpecification requestSpecification() {
-        RestAssured.baseURI = "https://petstore.swagger.io/v2";
+        RestAssured.baseURI = BASE_URI;
         return RestAssured
                 .given()
-                //.filters(new RequestLoggingFilter(), new ResponseLoggingFilter())
-                ;
+                .contentType("application/json")
+                .filter(new AllureRestAssured()
+                        .setRequestTemplate("http-request.ftl")
+                        .setResponseTemplate("http-response.ftl"))
+                .filter(new RequestLoggingFilter());
     }
 }
