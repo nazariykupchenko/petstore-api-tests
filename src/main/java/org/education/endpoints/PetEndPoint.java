@@ -1,6 +1,5 @@
 package org.education.endpoints;
 
-import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.builder.MultiPartSpecBuilder;
@@ -14,7 +13,6 @@ import static org.education.endpoints.Config.*;
 
 public class PetEndPoint extends Api {
 
-    @Step
     public ValidatableResponse createPet(PetModel body) {
         return requestSpecification()
                 .body(body)
@@ -22,7 +20,6 @@ public class PetEndPoint extends Api {
                 .then();
     }
 
-    @Step
     public ValidatableResponse uploadImage(String filePath, int petId) {
         File file = new File(filePath);
         RestAssured.baseURI = Config.BASE_URI;
@@ -41,14 +38,12 @@ public class PetEndPoint extends Api {
                 .then();
     }
 
-    @Step
     public ValidatableResponse getPetById(int petId) {
         return requestSpecification()
                 .get(GET_PET_BY_ID, petId)
                 .then();
     }
 
-    @Step
     public ValidatableResponse getPetByStatus(String status) {
         return requestSpecification()
                 .param("status", status)
@@ -56,7 +51,6 @@ public class PetEndPoint extends Api {
                 .then();
     }
 
-    @Step
     public ValidatableResponse deletePetById(int petId) {
         return requestSpecification()
                 .delete(DELETE_PET_BY_ID, petId)

@@ -2,7 +2,6 @@ package org.education.tests;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
 import org.education.endpoints.PetEndPoint;
 import org.education.models.PetModel;
 import org.junit.jupiter.api.MethodOrderer;
@@ -12,16 +11,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.IOException;
 
-import static org.education.utils.FileUtils.getPetPropertiesFromJson;
+import static org.education.utils.FileUtils.createPet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Epic("Pet tests")
-@Feature("Pet tests feature")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PetTest {
-
     private final PetEndPoint petEndPoint = new PetEndPoint();
-    private final PetModel pet = getPetPropertiesFromJson("src/main/resources/dog.json");
+    private final PetModel pet = createPet("src/main/resources/data/pet.json");
     private final int petId = pet.getId();
 
     public PetTest() throws IOException {
@@ -48,7 +45,7 @@ public class PetTest {
     @Description(useJavaDoc = true)
     void uploadPetImage() {
         petEndPoint
-                .uploadImage("src/main/resources/dog-photo.jpg", petId)
+                .uploadImage("src/main/resources/data/dog-photo.jpg", petId)
                 .assertThat()
                 .statusCode(200);
     }
@@ -81,10 +78,24 @@ public class PetTest {
     }
 
     /**
-     * Test to verify category name of created pet
+     * Test to check availability of pets
      */
     @Test
     @Order(5)
+    @Description(useJavaDoc = true)
+    void getPetByStatusTest() {
+        String status = "available";
+        petEndPoint
+                .getPetByStatus(status)
+                .assertThat()
+                .statusCode(200);
+    }
+
+    /**
+     * Test to verify category name of created pet
+     */
+    @Test
+    @Order(6)
     @Description(useJavaDoc = true)
     void categoryNameTest() {
         String name = petEndPoint
@@ -102,7 +113,7 @@ public class PetTest {
      * Test to verify deletion of a pet
      */
     @Test
-    @Order(6)
+    @Order(7)
     @Description(useJavaDoc = true)
     void deletePetTest() {
         petEndPoint
