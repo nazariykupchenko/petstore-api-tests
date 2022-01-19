@@ -3,7 +3,6 @@ package org.education.tests;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.restassured.response.ValidatableResponse;
 import org.education.endpoints.PetEndPoint;
 import org.education.models.PetModel;
 import org.junit.jupiter.api.MethodOrderer;
@@ -35,7 +34,10 @@ public class PetTest {
     @Order(1)
     @Description(useJavaDoc = true)
     void createPetTest() {
-        petEndPoint.createPet(pet);
+        petEndPoint
+                .createPet(pet)
+                .assertThat()
+                .statusCode(200);
     }
 
     /**
@@ -45,7 +47,10 @@ public class PetTest {
     @Order(2)
     @Description(useJavaDoc = true)
     void uploadPetImage() {
-        petEndPoint.uploadImage("src/main/resources/dog-photo.jpg", petId);
+        petEndPoint
+                .uploadImage("src/main/resources/dog-photo.jpg", petId)
+                .assertThat()
+                .statusCode(200);
     }
 
     /**
@@ -57,6 +62,7 @@ public class PetTest {
     void successfulResponseTest() {
         petEndPoint
                 .getPetById(petId)
+                .assertThat()
                 .statusCode(200);
     }
 
@@ -70,18 +76,20 @@ public class PetTest {
         int invalidPetId = -5554896;
         petEndPoint
                 .getPetById(invalidPetId)
+                .assertThat()
                 .statusCode(404);
     }
 
     /**
-     * Test to verify deletion of a pet
+     * Test to verify category name of created pet
      */
     @Test
     @Order(5)
     @Description(useJavaDoc = true)
     void categoryNameTest() {
-        ValidatableResponse validatableResponse = petEndPoint.getPetById(petId);
-        String name = validatableResponse
+        String name = petEndPoint
+                .getPetById(petId)
+                .assertThat()
                 .statusCode(200)
                 .extract()
                 .response()
@@ -91,12 +99,15 @@ public class PetTest {
     }
 
     /**
-     * Test to verify creation of a pet
+     * Test to verify deletion of a pet
      */
     @Test
     @Order(6)
     @Description(useJavaDoc = true)
     void deletePetTest() {
-        petEndPoint.deletePetById(petId);
+        petEndPoint
+                .deletePetById(petId)
+                .assertThat()
+                .statusCode(200);
     }
 }

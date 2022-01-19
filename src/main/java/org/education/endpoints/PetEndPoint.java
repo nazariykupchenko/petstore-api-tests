@@ -1,50 +1,65 @@
 package org.education.endpoints;
 
+import io.qameta.allure.Step;
+import io.qameta.allure.restassured.AllureRestAssured;
+import io.restassured.RestAssured;
 import io.restassured.builder.MultiPartSpecBuilder;
+import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.response.ValidatableResponse;
 import org.education.models.PetModel;
 
 import java.io.File;
 
+import static org.education.endpoints.Config.*;
+
 public class PetEndPoint extends Api {
 
+    @Step
     public ValidatableResponse createPet(PetModel body) {
         return requestSpecification()
-                .header("Content-Type", "application/json")
                 .body(body)
-                .post("pet")
-                .then()
-                .assertThat()
-                .statusCode(200);
+                .post(CREATE_PET)
+                .then();
     }
 
+    @Step
     public ValidatableResponse uploadImage(String filePath, int petId) {
         File file = new File(filePath);
-        return requestSpecification()
+        RestAssured.baseURI = Config.BASE_URI;
+        return RestAssured
+                .given()
+                .filter(new AllureRestAssured()
+                        .setRequestTemplate("http-request.ftl")
+                        .setResponseTemplate("http-response.ftl"))
+                .filter(new RequestLoggingFilter())
                 .multiPart(new MultiPartSpecBuilder(file)
                         .fileName(file.getName())
                         .controlName("file")
                         .mimeType("multipart/form-data")
                         .build())
-                .post("pet/" + petId + "/uploadImage")
-                .then()
-                .assertThat()
-                .statusCode(200);
-    }
-
-    public ValidatableResponse getPetById(int petId) {
-        return requestSpecification()
-                .header("Content-Type", "application/json")
-                .get("pet/" + petId)
+                .post(UPLOAD_IMAGE_BY_PET_ID, petId)
                 .then();
     }
 
+    @Step
+    public ValidatableResponse getPetById(int petId) {
+        return requestSpecification()
+                .get(GET_PET_BY_ID, petId)
+                .then();
+    }
+
+    @Step
+    public ValidatableResponse getPetByStatus(String status) {
+        return requestSpecification()
+                .param("status", status)
+                .get(GET_PET_BY_STATUS)
+                .then();
+    }
+
+    @Step
     public ValidatableResponse deletePetById(int petId) {
         return requestSpecification()
-                .header("Content-Type", "application/json")
-                .delete("pet/" + petId)
-                .then()
-                .assertThat()
-                .statusCode(200);
+                .delete(DELETE_PET_BY_ID, petId)
+                .then();
     }
 }
