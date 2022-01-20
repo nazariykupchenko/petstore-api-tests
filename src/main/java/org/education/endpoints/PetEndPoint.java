@@ -28,7 +28,6 @@ public class PetEndPoint extends Api {
                 .filter(new AllureRestAssured()
                         .setRequestTemplate("http-request.ftl")
                         .setResponseTemplate("http-response.ftl"))
-                .filter(new RequestLoggingFilter())
                 .multiPart(new MultiPartSpecBuilder(file)
                         .fileName(file.getName())
                         .controlName("file")
