@@ -1,4 +1,4 @@
-# Petstore test automation project
+# API test automation project
 [Swagger Petstore](https://petstore.swagger.io/)
 
 ##Tools
